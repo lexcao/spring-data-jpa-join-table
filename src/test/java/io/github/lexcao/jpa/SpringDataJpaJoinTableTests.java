@@ -92,6 +92,21 @@ class SpringDataJpaJoinTableTests {
         assertThat(givenAuthor.getName()).isEqualTo("Author_2");
     }
 
+    @Test
+    void multiQuery_04() {
+        var query = BookJoinQuery.builder()
+            .authorName("Author_2")
+            .reviewScore(70)
+            .build();
+
+        var spec = BookJoinSpec.multiQuery_04(query);
+        var page = PageRequest.of(0, 5);
+
+        var bookJoin = queryBySpecMethod(spec, page).getContent().get(0);
+        assertThat(bookJoin.getAuthor().getName()).isEqualTo("Author_2");
+        assertThat(bookJoin.getReview().getScore()).isEqualTo(70);
+    }
+
     private BookJoinQuery emptyQuery() {
         return BookJoinQuery.builder().build();
     }
